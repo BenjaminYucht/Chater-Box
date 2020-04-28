@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <title>Simple Chatbox</title>
+
+    <script>
+        (function () {
+
+            "use strict";
+
+            // Add your angular module and controller code here
+            angular
+
+                .module("app", [])
+
+                .controller("MessageController", function () {
+
+                    var vm = this;
+
+                    vm.displayedMessages = [];
+                    vm.inputMessage;
+
+                    vm.sendMessage = function (msg) {
+
+                        var msgObj = {};
+                        msgObj.msgStr = msg;
+                        msgObj.msgDate = vm.currentDateObj();
+                        vm.displayedMessages.push(msgObj);
+                        vm.clearInputMessage();
+                    }
+
+
+                    vm.currentDateObj = function () {
+
+                        var date = new Date();
+
+                        var dateObj = {
+                            Year: date.getFullYear(),
+                            Month: date.getMonth(),
+                            DayOfMonth: date.getDate(),
+                            Hour: date.getHours(),
+                            Minute: date.getMinutes(),
+                            Second: date.getSeconds()
+                        }
+                        return dateObj;
+                    }
+
+
+                    vm.clearInputMessage = function () {
+                        vm.inputMessage = "";
+                    }
+
+
+                    vm.clearDisplayedMessages = function () {
+                        vm.displayedMessages = [];
+                    }
+                })
+
+        })();
+    </script>
+</head>
+
+<!-- Add angular bindings to the HTML -->
+<body ng-app="app" class="container">
+    <form ng-controller="MessageController as msgCtrl">
+        <div class="form-group">
+            <label>Message</label>
+            <textarea class="form-control" ng-model="msgCtrl.inputMessage"></textarea>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-default" ng-click="msgCtrl.sendMessage(msgCtrl.inputMessage)">Send</button>
+            <button class="bnt btn-danger" ng-click="msgCtrl.clearDisplayedMessages()">Clear</button>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"ng-repeat="msg in msgCtrl.displayedMessages">
+                <p>{{msg.msgStr}}</p>
+                <p>{{msg.msgDate.Second}}:{{msg.msgDate.Minute}}:{{msg.msgDate.Hour}}:{{msg.msgDate.DayOfMonth}}:{{msg.msgDate.Month}}:{{msg.msgDate.Year}}</p>
+            </li>
+        </ul>
+    </form>
+</body>
+</html>
